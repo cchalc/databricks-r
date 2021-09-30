@@ -21,5 +21,11 @@
     },
     "autotermination_minutes": 30,
     "enable_elastic_disk": true,
-    "init_scripts": ["dbfs:/databricks/scripts/custom_r_init.sh"]
+    "init_scripts": [
+        {
+            "dbfs": {
+                "destination": "dbfs:/databricks/scripts/custom_r_init.sh"
+            }
+        }
+    ]
 }
