@@ -8,41 +8,6 @@ on:
       - 'v*' # this tag type is used for release pipelines
 
 jobs:
-  setup:
-
-    runs-on: ${{ matrix.os }}
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.8]
-        os: [ubuntu-latest]
-
-    env:
-      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-      DATABRICKS_TOKEN:  ${{ secrets.DATABRICKS_TOKEN }}
-
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: Inject slug/short variables
-        uses: rlespinasse/github-slug-action@v3.x
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python.version }}
-
-      - name: Install pip and databricks-cli
-        run: |
-          python -m pip install --upgrade pip
-          pip install -U databricks-cli
-
-      - name: Prepare profile
-        run: |
-          echo "[DEFAULT]" >> ~/.databrickscfg
-          echo "host = $DATABRICKS_HOST" >> ~/.databrickscfg
-          echo "token = $DATABRICKS_TOKEN" >> ~/.databrickscfg
-
   docker:
     runs-on: ubuntu-latest
     steps:
@@ -76,10 +41,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  create:
-    
-    needs: docker
+  setup:
 
+    needs: docker
     runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 4
@@ -92,7 +56,33 @@ jobs:
       DATABRICKS_TOKEN:  ${{ secrets.DATABRICKS_TOKEN }}
 
     steps:
+      - uses: actions/checkout@v1
+
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v3.x
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python.version }}
+
+      - name: Install pip and databricks-cli
+        run: |
+          python -m pip install --upgrade pip
+          pip install -U databricks-cli
+
+      - name: Prepare profile
+        run: |
+          echo "[DEFAULT]" >> ~/.databrickscfg
+          echo "host = $DATABRICKS_HOST" >> ~/.databrickscfg
+          echo "token = $DATABRICKS_TOKEN" >> ~/.databrickscfg
+
       - 
         name: set up init script
         run: |
           databricks fs cp --overwrite ./scripts/custom_r_init.sh dbfs:/databricks/scripts/custom_r_init.sh --profile DEFAULT
+
+      - 
+        name: create cluster
+        run: |
+          databricks clusters create --json-file ./conf/custom_r.json
