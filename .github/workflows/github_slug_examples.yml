@@ -1,6 +1,9 @@
 name: Linux usage
 
-on: push
+on:
+  push:
+    tags:
+    - '*'
 
 jobs:
   usage:
