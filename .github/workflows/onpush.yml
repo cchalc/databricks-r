@@ -91,6 +91,8 @@ jobs:
       DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
       DATABRICKS_TOKEN:  ${{ secrets.DATABRICKS_TOKEN }}
 
-      - name: set up init script
+    steps:
+      - 
+        name: set up init script
         run: |
           databricks fs cp --overwrite ./scripts/custom_r_init.sh dbfs:/databricks/scripts/custom_r_init.sh --profile DEFAULT
