@@ -1,4 +1,5 @@
 # Databricks configuration for RStudio sessions.
+# Sys.setenv("DOWNLOAD_STATIC_LIBV8" = 1)
 # Please do not remove this file or modify following lines.
 if (grepl("rstudio", system(paste0("cat /proc/", Sys.getpid(), "/cmdline"), intern = T))) {
   Sys.setenv("SPARK_HOME" = "/databricks/spark")
