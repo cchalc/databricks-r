@@ -1,0 +1,18 @@
+{
+  "cluster_id": "10201-my-cluster",
+  "libraries": [
+    {
+      "pypi": {
+        "package": "simplejson",
+        "repo": "https://my-pypi-mirror.com"
+      }
+    },
+    {
+      "cran": {
+        "package": "ada",
+        "repo": "https://cran.us.r-project.org"
+      }
+    }
+  ]
+}
+
