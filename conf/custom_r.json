@@ -8,6 +8,7 @@
     "spark_conf": {
         "spark.databricks.delta.preview.enabled": "true"
     },
+    "spark_env_vars": "DATABRICKS_RUNTIME_VERSION=9.1",
     "azure_attributes": {
         "first_on_demand": 1,
         "availability": "ON_DEMAND_AZURE",
