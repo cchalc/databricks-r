@@ -1,8 +1,8 @@
 {
     "num_workers": 4,
-    "cluster_name": "custom_rstan",
+    "cluster_name": "custom_r",
     "docker_image": {
-	"url": "cchalc/databricks_r:rstan"
+	"url": "cchalc/databricks_r:main"
     },
     "spark_version": "9.1.x-scala2.12",
     "spark_conf": {

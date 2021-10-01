@@ -36,7 +36,7 @@ RUN R -e "install.packages(c('hwriterPlus'), repos='https://mran.revolutionanaly
 # Added Sys.setenv(DOWNLOAD_STATIC_LIBV8 = 1) for the RStan install
 COPY Rprofile.site /usr/lib/R/etc/Rprofile.site
 
-RUN R -e "install.packages('rstan', repos = 'https://cloud.r-project.org/', dependencies = TRUE)"
+#RUN R -e "install.packages('rstan', repos = 'https://cloud.r-project.org/', dependencies = TRUE)"
 
 # Rstudio installation.
 RUN apt-get update \
