@@ -40,7 +40,7 @@ COPY Rprofile.site /usr/lib/R/etc/Rprofile.site
 # && R -e "install.packages('rstan', repos = 'https://cloud.r-project.org/', dependencies = TRUE)"
 
 # Add Michael Rutter's c2d4u4.0 PPA (and rrutter4.0 for CRAN builds too)
-RUN apt-get update
+RUN apt-get update \
  && add-apt-repository ppa:marutter/rrutter4.0 \
  && add-apt-repository ppa:c2d4u.team/c2d4u4.0+ \
  && apt-get update \
