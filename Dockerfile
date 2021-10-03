@@ -7,6 +7,15 @@ ENV DEBIAN_FRONTEND=noninteractive
 # We are using the more secure long form of pgp key ID of marutter@gmail.com
 # based on these instructions (avoiding firewall issue for some users):
 # https://cran.rstudio.com/bin/linux/ubuntu/#secure-apt
+
+# Add Michael Rutter's c2d4u4.0 PPA (and rrutter4.0 for CRAN builds too)
+#RUN apt-get update \
+# && add-apt-repository ppa:marutter/rrutter4.0 \
+# && add-apt-repository ppa:c2d4u.team/c2d4u4.0+ \
+# && apt-get update \
+# && apt-get install --yes r-cran-rstan
+
+
 RUN apt-get update \
   && apt-get install --yes software-properties-common apt-transport-https \
   && gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
@@ -18,6 +27,10 @@ RUN apt-get update \
     r-base \
     r-base-dev \
   && add-apt-repository -r 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu bionic-cran40/' \
+  && add-apt-repository ppa:marutter/rrutter4.0 \
+  && add-apt-repository ppa:c2d4u.team/c2d4u4.0+ \
+  && apt-get update \
+  && apt-get install --yes r-cran-rstan \
   && apt-key del E298A3A825C0D65DFD57CBB651716619E084DAB9 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -39,12 +52,6 @@ COPY Rprofile.site /usr/lib/R/etc/Rprofile.site
 #RUN R -e Sys.setenv("DOWNLOAD_STATIC_LIBV8" = 1) \
 # && R -e "install.packages('rstan', repos = 'https://cloud.r-project.org/', dependencies = TRUE)"
 
-# Add Michael Rutter's c2d4u4.0 PPA (and rrutter4.0 for CRAN builds too)
-RUN apt-get update \
- && add-apt-repository ppa:marutter/rrutter4.0 \
- && add-apt-repository ppa:c2d4u.team/c2d4u4.0+ \
- && apt-get update \
- && apt-get install --yes r-cran-rstan
 
 # Rstudio installation.
 RUN apt-get update \
