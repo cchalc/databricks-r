@@ -20,6 +20,7 @@ RUN apt-get update \
     r-base \
     r-base-dev \
     r-recommended \
+    libnode-dev \ 
     r-cran-v8 \
     r-cran-rstan \
   && add-apt-repository -r 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu bionic-cran40/' \
