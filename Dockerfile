@@ -12,22 +12,22 @@ RUN apt-get update \
   && gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
   && gpg -a --export E298A3A825C0D65DFD57CBB651716619E084DAB9 | sudo apt-key add - \
   && add-apt-repository -y 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu bionic-cran40/' \
-  && add-apt-repository --enable-source --yes "ppa:marutter/rrutter4.0" \
-  && add-apt-repository --enable-source --yes "ppa:c2d4u.team/c2d4u4.0+" \
+  && add-apt-repository ppa:marutter/rrutter4.0 \
+  && add-apt-repository ppa:c2d4u.team/c2d4u4.0+ \
+  && add-apt-repository ppa:cran/v8 \
   && apt-get update \
   && apt-get install --yes \
     libssl-dev \
     r-base \
     r-base-dev \
-    r-recommended \
-    libnode-dev \ 
     r-cran-v8 \
+    r-recommended \
     r-cran-rstan \
   && add-apt-repository -r 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu bionic-cran40/' \
   && apt-key del E298A3A825C0D65DFD57CBB651716619E084DAB9 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
+  
 # hwriterPlus is used by Databricks to display output in notebook cells
 # Rserve allows Spark to communicate with a local R process to run R code
 RUN R -e "install.packages(c('hwriterPlus'), repos='https://mran.revolutionanalytics.com/snapshot/2017-02-26')" \
@@ -37,17 +37,8 @@ RUN R -e "install.packages(c('hwriterPlus'), repos='https://mran.revolutionanaly
 # Additional instructions to setup rstudio. If you dont need rstudio, you can 
 # omit the below commands in your docker file. Even after this you need to use
 # an init script to start the RStudio daemon (See README.md for details.)
-
 # Databricks configuration for RStudio sessions.
-# Added Sys.setenv(DOWNLOAD_STATIC_LIBV8 = 1) for the RStan install
 COPY Rprofile.site /usr/lib/R/etc/Rprofile.site
-
-#RUN R -e Sys.setenv("DOWNLOAD_STATIC_LIBV8" = 1) \
-# && R -e "install.packages('rstan', repos = 'https://cloud.r-project.org/', dependencies = TRUE)"
-
-# Install native rstan
-#RUN apt-get update && apt-get install --yes r-cran-rstan
-
 
 # Rstudio installation.
 RUN apt-get update \
