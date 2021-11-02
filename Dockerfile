@@ -24,7 +24,7 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Install the geospatial packages
+# Install the geospatial packages 
 RUN R -e "remotes::install_github("rspatial/terra")"
 
 # hwriterPlus is used by Databricks to display output in notebook cells
