@@ -9,18 +9,24 @@ ENV DEBIAN_FRONTEND=noninteractive
 # https://cran.rstudio.com/bin/linux/ubuntu/#secure-apt
 RUN apt-get update \
   && apt-get install --yes software-properties-common apt-transport-https \
-  && gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
-  && gpg -a --export E298A3A825C0D65DFD57CBB651716619E084DAB9 | sudo apt-key add - \
   && add-apt-repository -y 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu bionic-cran40/' \
+  && sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable \
   && apt-get update \
   && apt-get install --yes \
     libssl-dev \
     r-base \
     r-base-dev \
+    libudunits2-dev \
+    libgdal-dev \
+    libgeos-dev \
+    libproj-dev \
   && add-apt-repository -r 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu bionic-cran40/' \
   && apt-key del E298A3A825C0D65DFD57CBB651716619E084DAB9 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Install the geospatial packages
+RUN R -e "remotes::install_github("rspatial/terra")"
 
 # hwriterPlus is used by Databricks to display output in notebook cells
 # Rserve allows Spark to communicate with a local R process to run R code
