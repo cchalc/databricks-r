@@ -10,7 +10,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
   && apt-get install --yes software-properties-common apt-transport-https \
   && add-apt-repository -y 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu bionic-cran40/' \
-  && sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable \
   && apt-get update \
   && apt-get install --yes \
     libssl-dev \
