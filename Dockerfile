@@ -26,8 +26,8 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install the geospatial packages 
-RUN R -e "install.packages("remotes")"
-RUN R -e "remotes::install_github("rspatial/terra")"
+#RUN R -e "install.packages("remotes")"
+#RUN R -e "remotes::install_github("rspatial/terra")"
 
 # hwriterPlus is used by Databricks to display output in notebook cells
 # Rserve allows Spark to communicate with a local R process to run R code
