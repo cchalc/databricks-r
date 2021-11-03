@@ -9,8 +9,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 # https://cran.rstudio.com/bin/linux/ubuntu/#secure-apt
 RUN apt-get update \
   && apt-get install --yes software-properties-common apt-transport-https \
-  && add-apt-repository -y 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu bionic-cran40/' \
   && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
+  && add-apt-repository -y 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu bionic-cran40/' \
   && apt-get update \
   && apt-get install --yes \
     libssl-dev \
