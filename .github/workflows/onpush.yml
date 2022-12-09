@@ -80,7 +80,7 @@ jobs:
       - 
         name: set up init script
         run: |
-          databricks fs cp --overwrite ./scripts/custom_r_init.sh dbfs:/databricks/scripts/custom_r_init.sh --profile DEFAULT
+          databricks fs cp --overwrite ./scripts/custom_r_init.sh dbfs:/databricks/scripts/custom_r_init.sh
 
       - 
         name: create cluster
