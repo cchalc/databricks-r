@@ -1,0 +1,36 @@
+{
+    "num_workers": 4,
+    "cluster_name": "custom_r",
+    "docker_image": {
+	"url": "cchalc/databricks_r:main"
+    },
+    "spark_version": "9.1.x-scala2.12",
+    "spark_conf": {
+        "spark.databricks.delta.preview.enabled": "true"
+    },
+    "azure_attributes": {
+        "first_on_demand": 1,
+        "availability": "ON_DEMAND_AZURE",
+        "spot_bid_max_price": -1
+    },
+    "node_type_id": "Standard_DS3_v2",
+    "driver_node_type_id": "Standard_DS12_v2",
+    "ssh_public_keys": [],
+    "custom_tags": {},
+    "spark_env_vars": {
+        "PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+    },
+    "spark_env_vars": {
+        "DATABRICKS_RUNTIME_VERSION": "9.1",
+        "PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+    },
+    "autotermination_minutes": 30,
+    "enable_elastic_disk": true,
+    "init_scripts": [
+        {
+            "dbfs": {
+                "destination": "dbfs:/databricks/scripts/custom_r_init.sh"
+            }
+        }
+    ]
+}

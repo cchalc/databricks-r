@@ -1,7 +1,14 @@
-FROM databricksruntime/minimal:9.x
+# picked up dockerfile from https://github.com/databricks/containers/blob/master/ubuntu/R/Dockerfile
+FROM databricksruntime/minimal:experimental
 
 # Suppress interactive configuration prompts
 ENV DEBIAN_FRONTEND=noninteractive
+
+# Install python 3.8 and virtualenv for Spark and Notebooks
+RUN apt-get update \
+  && apt-get install -y \
+    python3.8 \
+    virtualenv
 
 # We add RStudio's debian source to install the latest r-base version (4.1)
 # We are using the more secure long form of pgp key ID of marutter@gmail.com
@@ -11,21 +18,22 @@ RUN apt-get update \
   && apt-get install --yes software-properties-common apt-transport-https \
   && gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 \
   && gpg -a --export E298A3A825C0D65DFD57CBB651716619E084DAB9 | sudo apt-key add - \
-  && add-apt-repository -y 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu bionic-cran40/' \
+  && add-apt-repository -y "deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu $(lsb_release -cs)-cran40/" \
   && apt-get update \
   && apt-get install --yes \
     libssl-dev \
     r-base \
     r-base-dev \
-  && add-apt-repository -r 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu bionic-cran40/' \
+  && add-apt-repository -r "deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu $(lsb_release -cs)-cran40/" \
   && apt-key del E298A3A825C0D65DFD57CBB651716619E084DAB9 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # hwriterPlus is used by Databricks to display output in notebook cells
+# hwriterPlus is removed for newer version of R, so we hardcode the dependency to archived version
 # Rserve allows Spark to communicate with a local R process to run R code
-RUN R -e "install.packages(c('hwriterPlus'), repos='https://mran.revolutionanalytics.com/snapshot/2017-02-26')" \
- && R -e "install.packages(c('htmltools'), repos='https://cran.microsoft.com/')" \
+RUN R -e "options(repos = list(MRAN = 'https://mran.microsoft.com/snapshot/2022-04-08', CRAN = 'https://cran.microsoft.com/')); install.packages(c('hwriter', 'TeachingDemos', 'htmltools'))" \
+ && R -e "install.packages('https://cran.r-project.org/src/contrib/Archive/hwriterPlus/hwriterPlus_1.0-3.tar.gz', repos=NULL, type='source')" \
  && R -e "install.packages('Rserve', repos='http://rforge.net/')"
 
 # Additional instructions to setup rstudio. If you dont need rstudio, you can 
@@ -33,19 +41,17 @@ RUN R -e "install.packages(c('hwriterPlus'), repos='https://mran.revolutionanaly
 # an init script to start the RStudio daemon (See README.md for details.)
 
 # Databricks configuration for RStudio sessions.
-# Added Sys.setenv(DOWNLOAD_STATIC_LIBV8 = 1) for the RStan install
 COPY Rprofile.site /usr/lib/R/etc/Rprofile.site
-
-#RUN R -e "install.packages('rstan', repos = 'https://cloud.r-project.org/', dependencies = TRUE)"
 
 # Rstudio installation.
 RUN apt-get update \
- # Installation of rstudio in databricks needs /usr/bin/python.
- && apt-get install -y python \
  # Install gdebi-core.
  && apt-get install -y gdebi-core \
- # Download rstudio 1.2 package for ubuntu 18.04 and install it.
+ # Download rstudio 1.4 package for ubuntu 18.04 and install it.
  && apt-get install -y wget \
- && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.2.5042-amd64.deb -O rstudio-server.deb \
- && gdebi -n rstudio-server.deb \
- && rm rstudio-server.deb
+ && apt-get install -y gdebi-core \
+ && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-2022.02.1-461-amd64.deb \
+ && gdebi -n rstudio-server-2022.02.1-461-amd64.deb && rstudio-server version
+
+# Initialize the default environment that Spark and notebooks will use
+RUN virtualenv -p python3.8 --system-site-packages /databricks/python3
