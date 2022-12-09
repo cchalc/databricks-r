@@ -19,20 +19,19 @@
   "ssh_public_keys": [],
   "custom_tags": {},
   "spark_env_vars": {
-  "spark_env_vars": {
   	"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
   },
   "autotermination_minutes": 40,
   "enable_elastic_disk": false,
   "cluster_source": "UI",
-  "init_scripts": [
-  	{
-				"dbfs": {
-						"destination": "dbfs:/databricks/scripts/custom_r_init.sh"
-				}
-		}
-  ],
   "single_user_name": "christopher.chalcraft@databricks.com",
   "data_security_mode": "SINGLE_USER",
-  "runtime_engine": "STANDARD"
+  "runtime_engine": "STANDARD",
+  "init_scripts": [
+  	{
+			"dbfs": {
+					"destination": "dbfs:/databricks/scripts/custom_r_init.sh"
+			}
+		}
+	]
 }
