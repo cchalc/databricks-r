@@ -188,4 +188,4 @@ dmypy.json
 .databrickscfg
 .dbsqlclirc
 .notes.md
-
+.odbc.ini
