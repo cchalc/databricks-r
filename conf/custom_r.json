@@ -4,7 +4,7 @@
   "docker_image": {
   	"url": "cchalc/databricks_r:main"
   },
-  "spark_version": "10.4.x-cpu-ml-scala2.12",
+  "spark_version": "10.4.x-scala2.12",
   "spark_conf": {},
   "aws_attributes": {
   	"first_on_demand": 5,

@@ -1,7 +1,7 @@
 name: custom r pipeline
 
 on:
-  push:
+  workflow_dispatch:
     branches:
       - '**'
     tags-ignore:
@@ -71,11 +71,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -U databricks-cli
 
-      - name: Prepare profile
-        run: |
-          echo "[DEFAULT]" >> ~/.databrickscfg
-          echo "host = $DATABRICKS_HOST" >> ~/.databrickscfg
-          echo "token = $DATABRICKS_TOKEN" >> ~/.databrickscfg
+          #      - name: Prepare profile
+          #        run: |
+          #          echo "[DEFAULT]" >> ~/.databrickscfg
+          #          echo "host = $DATABRICKS_HOST" >> ~/.databrickscfg
+          #          echo "token = $DATABRICKS_TOKEN" >> ~/.databrickscfg
 
       - 
         name: set up init script
