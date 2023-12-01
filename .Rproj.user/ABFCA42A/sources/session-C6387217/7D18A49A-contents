@@ -1,9 +1,0 @@
-library(sparklyr)
-library(dplyr)
-library(ggplot2)
-
-sc <- spark_connect(master="local")
-
-flights_tbl <- copy_to(sc, nycflights13::flights, "flights")
-
-airlines_tbl <- copy_to(sc, nycflights13::airlines, "airlines")
