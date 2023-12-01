@@ -1,4 +1,18 @@
 # Databricks notebook source
+install.packages("devtools")
+library(devtools)
+install_github("databrickslabs/databricks-sdk-r")
+
+# COMMAND ----------
+
+require(databricks)
+
+client <- DatabricksClient()
+clustersList(client)[, "cluster_name"]
+
+
+# COMMAND ----------
+
 require(databricks)
 
 client <- DatabricksClient()
@@ -6,8 +20,8 @@ client <- DatabricksClient()
 job_name <- readline("cjc_r_rjob")
 description <- readline("rsdk demo")
 existing_cluster_id <- readline("1201-073329-prhqpoky")
-notebook_path <- readline("Workspace path of the notebook to run (for example, /Users/someone@example.com/my-notebook):")
-task_key <- readline("Some key to apply to the job's tasks (for example, my-key):")
+notebook_path <- readline("/Repos/christopher.chalcraft@databricks.com/databricks-r/notebooks/demo")
+task_key <- readline("my task key")
 
 print("Attempting to create the job. Please wait...")
 
@@ -47,3 +61,7 @@ print(paste(
   response$job_id,
   sep = "")
 )
+
+# COMMAND ----------
+
+
