@@ -38,3 +38,7 @@ tinytex::pdflatex("test.tex")
 # COMMAND ----------
 
 # MAGIC %sh ls
+
+# COMMAND ----------
+
+renv::install("pandoc")
